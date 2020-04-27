@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<title>Tune Chakra</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+article {
+    width: 810px;
+    margin: 0 auto;
+    text-align: center;
+}
+body {
+    background-color: black;
+}
+
+@media (max-width: 800px) {
+
+}
+</style>
+
+<body>
+
+<article>
+<p>
+<select id="chakra-color">
+    <option value="">Choose Chakra</option>
+    <option value="red, 396">Root Chakra</option>
+    <option value="orange, 417">Sacral Chakra</option>
+    <option value="yellow, 528">Solar Plexus Chakra</option>
+    <option value="green, 639">Heart Chakra</option>
+    <option value="blue, 741">Throat Chakra</option>
+    <option value="indigo, 852">Third Eye Chakra</option>
+    <option value="violet, 963">The Crown Chakra</option>
+</select>
+</p>
+
+</article>
+
+<script>
+var audioContext, osc, oscVol, on = false, quiet = true;
+
+function init() {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    osc = audioContext.createOscillator();
+    oscVol = audioContext.createGain();
+
+    osc.connect(oscVol);
+    oscVol.connect(audioContext.destination);
+    oscVol.gain.value = 0.0;
+    oscVol.gain.setValueAtTime(0, audioContext.currentTime);
+    osc.start();
+}
+
+document.getElementById("chakra-color").addEventListener("change", function () {
+    var data;
+    if (!on) {
+        init();
+        on = true;
+    }
+    if (!this.value) {
+        document.body.style.backgroundColor = "black";
+        oscVol.gain.value = 1.0;
+        oscVol.gain.linearRampToValueAtTime(0.0, audioContext.currentTime + 0.5);
+        quiet = true;
+    } else {
+        if (!quiet) {
+            oscVol.gain.value = 1.0;
+        }
+        data = this.value.split(", ");
+        document.body.style.backgroundColor = data[0];
+
+        quiet = false;
+        oscVol.gain.linearRampToValueAtTime(0.0, audioContext.currentTime + 0.5);
+        osc.frequency.setValueAtTime(data[1], audioContext.currentTime + 0.5);
+        oscVol.gain.linearRampToValueAtTime(1.0, audioContext.currentTime + 1.0);
+        oscVol.gain.setValueAtTime(1.0, audioContext.currentTime + 1.0);
+    }
+});
+
+</script>

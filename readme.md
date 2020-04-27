@@ -30,3 +30,35 @@ This is the tone of the Platonic Year, otherwise known as the Great Year; or a p
 The frequency of 963 Hz is connected with the Light, and enables direct experience. Re-connects you with the Spirit, or the non-vibrational energies of the spiritual world.
 
 ## Rhythms
+
+ORGAN  FREQUENCY (Dr. Yoshio Manaka M.D. Japan.)
+Lung       126 Cycles Per Minute
+Colon      108 Cycles Per Minute
+Spleen    132 Cycles Per Minute
+Stomach 132 Cycles Per Minute
+Heart       126 Cycles Per Minute
+Small Intestine 120 Cycles Per Minute
+Kidney              120 Cycles Per Minute
+Bladder    112 Cycles Per Minute
+Pericardium 176 Cycles Per Minute
+San Jiao (Triple Heater) 152 Cycles Per Minute
+Liver 108 Cycles Per Minute
+Gallbladder 120 Cycles Per Minute
+Ren Mai (Conceptor Vessel) 104 Cycles Per Minute
+Du Mai (Governing Vessel) 104 Cycles Per Minute (Yes it is the same)
+
+ORGAN  FREQUENCY
+Lung             2.1hZ
+Colon            1.8Hz
+Spleen           2.2Hz
+Stomach          2.2Hz
+Heart            2.1Hz
+Small Intestine  2.0Hz
+Kidney           2.0Hz
+Bladder          1.867Hz
+Pericardium      2.933Hz
+San Jiao (Triple Heater)   2.533Hz
+Liver                      1.8Hz
+Gallbladder                2.0Hz
+Ren Mai (Conceptor Vessel) 1.733Hz
+Du Mai (Governing Vessel)  1.733Hz

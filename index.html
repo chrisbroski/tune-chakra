@@ -27,7 +27,7 @@ body {
 
 <article>
 <p>
-<select id="chakra-color">
+<select id="chakra">
     <option value="">Choose Chakra</option>
     <option value="red, 396">Root Chakra</option>
     <option value="orange, 417">Sacral Chakra</option>
@@ -39,47 +39,81 @@ body {
 </select>
 </p>
 
+<p>
+<select id="organ">
+    <option value="0.0">Choose Organ</option>
+    <option value="2.1">Lung</option>
+    <option value="1.8">Colon</option>
+    <option value="2.2">Spleen</option>
+    <option value="2.2">Stomach</option>
+    <option value="2.1">Heart</option>
+    <option value="2.0">Small Intestine</option>
+    <option value="2.0">Kidney</option>
+    <option value="1.86667">Bladder</option>
+    <option value="2.93333">Pericardium</option>
+    <option value="2.53333">San Jiao (Triple Heater)</option>
+    <option value="1.8">Liver</option>
+    <option value="2.0">Gallbladder</option>
+    <option value="1.73333">Ren Mai (Conceptor Vessel)</option>
+    <option value="1.73333">Du Mai (Governing Vessel)</option>
+</select>
+</p>
+
 </article>
 
 <script>
-var audioContext, osc, oscVol, on = false, quiet = true;
+var audioContext, osc1, oscVol, osc2, on = false, quiet = true, maxVol = 0.2;
 
 function init() {
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    osc = audioContext.createOscillator();
+    osc1 = audioContext.createOscillator();
+    osc2 = audioContext.createOscillator();
     oscVol = audioContext.createGain();
 
-    osc.connect(oscVol);
+    osc1.connect(oscVol);
+    osc2.connect(oscVol);
     oscVol.connect(audioContext.destination);
     oscVol.gain.value = 0.0;
     oscVol.gain.setValueAtTime(0, audioContext.currentTime);
-    osc.start();
+    osc1.start();
+    osc2.start();
 }
 
-document.getElementById("chakra-color").addEventListener("change", function () {
-    var data;
+function changeChakra(chakra, organ) {
+    var chakraData, freq, binFreq = 0.0;
     if (!on) {
         init();
         on = true;
     }
-    if (!this.value) {
+    if (!chakra) {
         document.body.style.backgroundColor = "black";
-        oscVol.gain.value = 1.0;
+        oscVol.gain.value = maxVol;
         oscVol.gain.linearRampToValueAtTime(0.0, audioContext.currentTime + 0.5);
         quiet = true;
     } else {
         if (!quiet) {
-            oscVol.gain.value = 1.0;
+            oscVol.gain.value = maxVol;
         }
-        data = this.value.split(", ");
-        document.body.style.backgroundColor = data[0];
+        chakraData = chakra.split(", ");
+        document.body.style.backgroundColor = chakraData[0];
+        freq = parseFloat(chakraData[1]);
+        binFreq = parseFloat(organ);
 
         quiet = false;
         oscVol.gain.linearRampToValueAtTime(0.0, audioContext.currentTime + 0.5);
-        osc.frequency.setValueAtTime(data[1], audioContext.currentTime + 0.5);
-        oscVol.gain.linearRampToValueAtTime(1.0, audioContext.currentTime + 1.0);
-        oscVol.gain.setValueAtTime(1.0, audioContext.currentTime + 1.0);
+        osc1.frequency.setValueAtTime(freq, audioContext.currentTime + 0.5);
+        osc2.frequency.setValueAtTime(freq + binFreq, audioContext.currentTime + 0.5);
+        oscVol.gain.linearRampToValueAtTime(maxVol, audioContext.currentTime + 1.0);
+        oscVol.gain.setValueAtTime(maxVol, audioContext.currentTime + 1.0);
     }
-});
+}
+
+document.getElementById("chakra").onchange = function () {
+    changeChakra(this.value, document.getElementById("organ").value);
+};
+
+document.getElementById("organ").onchange = function () {
+    changeChakra(document.getElementById("chakra").value, this.value);
+};
 
 </script>

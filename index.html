@@ -3,19 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-<title>Tune Chakra</title>
+<title>Tune Chakras</title>
 
 <style>
 * {
     box-sizing: border-box;
 }
 article {
-    width: 810px;
-    margin: 0 auto;
     text-align: center;
 }
 body {
     background-color: black;
+}
+#mandala {
+    margin-left: -50%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 
 @media (max-width: 800px) {
@@ -29,13 +36,13 @@ body {
 <p>
 <select id="chakra">
     <option value="">Choose Chakra</option>
-    <option value="red, 396">Root Chakra</option>
-    <option value="orange, 417">Sacral Chakra</option>
-    <option value="yellow, 528">Solar Plexus Chakra</option>
-    <option value="green, 639">Heart Chakra</option>
-    <option value="blue, 741">Throat Chakra</option>
-    <option value="indigo, 852">Third Eye Chakra</option>
-    <option value="violet, 963">The Crown Chakra</option>
+    <option value="396">Root Chakra</option>
+    <option value="417">Sacral Chakra</option>
+    <option value="528">Solar Plexus Chakra</option>
+    <option value="639">Heart Chakra</option>
+    <option value="741">Throat Chakra</option>
+    <option value="852">Third Eye Chakra</option>
+    <option value="963">The Crown Chakra</option>
 </select>
 </p>
 
@@ -59,10 +66,34 @@ body {
 </select>
 </p>
 
+<img id="mandala" src="chakra/No_Mandala.svg" alt="Muladhara Mandala">
+
 </article>
 
 <script>
 var audioContext, osc1, oscVol, osc2, on = false, quiet = true, maxVol = 0.2;
+
+var colors = [
+    "black",
+    "red",
+    "orange",
+    "yellow",
+    "green",
+    "blue",
+    "indigo",
+    "violet"
+];
+
+var mandalas = [
+    "No",
+    "Muladhara",
+    "Swadhisthana",
+    "Manipura",
+    "Anahata",
+    "Vishuddha",
+    "Ajna",
+    "Sahasrara"
+];
 
 function init() {
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -79,14 +110,17 @@ function init() {
     osc2.start();
 }
 
-function changeChakra(chakra, organ) {
-    var chakraData, freq, binFreq = 0.0;
+function changeChakra(freq, organ) {
+    var binFreq = 0.0;
     if (!on) {
         init();
         on = true;
     }
+    var chakraIndex = document.getElementById("chakra").selectedIndex;
+    document.getElementById("mandala").src = "chakra/" + mandalas[chakraIndex] + "_Mandala.svg";
+    document.body.style.backgroundColor = colors[chakraIndex];
+
     if (!chakra) {
-        document.body.style.backgroundColor = "black";
         oscVol.gain.value = maxVol;
         oscVol.gain.linearRampToValueAtTime(0.0, audioContext.currentTime + 0.5);
         quiet = true;
@@ -94,15 +128,14 @@ function changeChakra(chakra, organ) {
         if (!quiet) {
             oscVol.gain.value = maxVol;
         }
-        chakraData = chakra.split(", ");
-        document.body.style.backgroundColor = chakraData[0];
-        freq = parseFloat(chakraData[1]);
+
+        freq = parseFloat(freq);
         binFreq = parseFloat(organ);
 
         quiet = false;
         oscVol.gain.linearRampToValueAtTime(0.0, audioContext.currentTime + 0.5);
-        osc1.frequency.setValueAtTime(freq, audioContext.currentTime + 0.5);
-        osc2.frequency.setValueAtTime(freq + binFreq, audioContext.currentTime + 0.5);
+        osc1.frequency.setValueAtTime(freq - binFreq / 2, audioContext.currentTime + 0.5);
+        osc2.frequency.setValueAtTime(freq + binFreq / 2, audioContext.currentTime + 0.5);
         oscVol.gain.linearRampToValueAtTime(maxVol, audioContext.currentTime + 1.0);
         oscVol.gain.setValueAtTime(maxVol, audioContext.currentTime + 1.0);
     }
